@@ -1,0 +1,28 @@
+## Faces
+
+### Dialogue Faces
+
+Contained in `/data/f/` directory.
+
+Entire files are compressed with FEDS compression/encoding
+
+After decompressing:
+- Palette data is first 0x200 bytes
+- Rest is img data
+
+There's a "faces.bin" which contains the FIDs and some pointers, not sure what else yet
+
+### Stat Screen Faces
+
+Portraits for the stat screen are located in "/data/sf/" (stat face? small face?)
+
+".p" files are palette data, uncompressed
+
+Each sf file is compressed perhaps differently :( Tiki is 0x40 FEDS, Caeda is 0x10 LZ10 compressed
+
+Compression schemes!
+0x10 is LZ10
+0x11 is LZ11
+0x28 is huffman?
+0x30 is NitroGfx's RL
+0x40 is FEDS Nintenlord decompression

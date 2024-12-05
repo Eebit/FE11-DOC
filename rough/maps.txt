@@ -1,0 +1,52 @@
+// FE11 Map Format
+
+00 | word | file size
+04 | word | offset (add header to offset!) of something
+08 | word | number of entries
+0C | word | number? seems to be always 1
+(rest of header is 00)
+
+20 | word | 0x20070522
+24 | word | offset (add header!) to *.ta file
+...
+2C | byte | width?
+2D | byte | height?
+2E | byte | number of layers
+2F | byte | number of textures?
+30 | word | offset to terrain data
+34 | word | offset to ? end of terrain data?
+38 | word | always 0x30 ?
+3C | word | pointer to TEXTURES!!! (size of each is 0x28!)
+
+44 | word | pointer to minimap (lz77 0x10 compressed img data)
+48 |
+4C | word | pointer to minimap pal
+
+TA files are compressed (LZ77 0x10)
+0x1C after the header in the main map file is the array of textures
+Texture struct:
+00 | img offset in TA file
+04 | img size
+08 | ?
+0C | pal offset
+10 | pal size
+14 | ?
+18 | ?
+1C | ?
+20 | ?
+24 | ?
+
+ex: bmap_201:
+
+0x00000004 = 0x7C4 + 0x20 = 0x7E4, ptr to "bmap_201.ta"
+0x00000010 = 0x5350 + 0x20 = 0x5370, ptr to tile? data (interacted with in "FUN_021a3364")
+0x00000014 = 0x5750 + 0x20 = 0x5770, ptr to ? end of tile data?
+0x00000018 = 0x30, ?
+
+0x0000001C = 0x168 + 0x20 = 0x188, ptr to ? texture data? fun_021D708C loads it and compares # of textures... (+0xf)
+
+188, 1b0, 1d8, 200, 228 => textures
+
+0x00000024 = 0x5B50 + 0x20 = 0x5B70, ptr to minimap data, lz77 0x10 compressed (FUN_020a5a00 - first word is some bitfield, maybe? then byte array, ends at 0x700A)
+
+0x28 => all zeroes in map_201; checked at FUN_0204ef20 0x204EF78 for non-zero
